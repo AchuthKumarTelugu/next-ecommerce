@@ -1,0 +1,24 @@
+  https://youtu.be/I0BOUiFe9WY?si=ShRF6pW9pzCJKQRA
+  first designing navbar,to build interactivity we have to use client component,so we import and use Menu components for mobile screens
+  store images in public folder so that we can directly access it like /image.png
+
+  Navbar.tsx,Menu.tsx,Searchbar.tsx,NavbarIcons.tsx
+  made mobile view first for navbar.tsx using menu.tsx and made pc view using Searchbar.tsx,NavbarIcons.tsx from components ,pc navbar navbar have left and right component
+  
+  Searchbar.tsx
+  made search search functionality such that its data in input appears on url like /list?name=(entered value) using router=useRouter()
+
+  CartModal.tsx,NavbarIcons.tsx
+  made profile modal , cart modal and badge with no of items in cart and next making seperate list of links in navbar when screen size is xl
+
+  CartModal.tsx,designed cart modal .tsx where create all layout,used reducer ---method for calculating subtotal for accumulator we have to give default like value.reduce((acc:number,items:item)=>acc+(item*price+item*Qty),0)
+  ---made slider logic and automatically changes slides using useEffect
+  to use image fill propery like <Image src="" alt="" fill sizes="100%"/> ,its parent container should be relative
+  
+  Slider.tsx:designed slider with logic where all cards are display,with one occupying screen and remaining being cutted using overflow-hidden and using currItem ,transforming :translateX(-(currITem*100)vw) to get sliding effect,and using useEfect making slider goes continue wise
+
+  ProductList.tsx,designing product list where on hovering images changes,loginc being one image on another using absolute for one ,so when hovering on other its becomes opacity-0 showing its down one,designed remaining items in card component
+
+  CategoryList.tsx,designing category list slider horizantallly ,where i designed scroll bar,made overflow-x-scroll using tailwind css
+
+  made footer design with center one only visible during medium screen and made it responsive

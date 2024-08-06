@@ -1,0 +1,23 @@
+/* .scrollbar_hide::-webkit-scrollbar{
+    display:none;
+}
+.scrollbar_hide{
+    scrollbar-width:none;
+} */
+.scrollbar_hide::-webkit-scrollbar {
+    width: 4px;
+    height: 6px;
+  }
+  
+  .scrollbar_hide::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+  
+  .scrollbar_hide::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 6px;
+  }
+  
+  .scrollbar_hide::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
