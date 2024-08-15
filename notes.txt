@@ -22,3 +22,105 @@
   CategoryList.tsx,designing category list slider horizantallly ,where i designed scroll bar,made overflow-x-scroll using tailwind css
 
   made footer design with center one only visible during medium screen and made it responsive
+
+made list->page.tsx where its responsive and many sortings to show products based on filter
+
+created single page where left side is sticky with three images and right side about product includes add to cart,colors 
+
+WIX HEADLESS :context/wixContext.tsx
+ITS USED FOR PRODUCT,MAINTAINING BACK END CONTENT,we can customise and add products and categories,look for video for further details
+https://manage.wix.com/dashboard/81a27cef-78ef-4a48-9fb6-83f62782935c/setup?referralInfo=intro&flow=headless&ref=lp_vanilla&additionalInfo=developer
+to use products
+
+WIX HEADLESS DOCS :
+https://dev.wix.com/docs/go-headless/coding/java-script-sdk/visitors-and-members/create-a-client-with-oauth
+npm @wix/stores @wix/sdk
+
+after downloading above files write below code to continue
+"use client"
+import { products } from "@wix/stores";
+import { createClient, OAuthStrategy } from "@wix/sdk";
+import Cookie from 'js-cookie' //since we can acessa cookie from client directly we use this js-cookie package
+import { createContext, ReactNode } from "react";
+const refreshToken=JSON.parse(Cookie.get('refreshToken')||"{}") //checking refreshtoken presence and converting from string if present
+
+const wixClient = createClient({
+    modules: {
+      products,//import product from @wix/stores
+    },
+    auth: OAuthStrategy({
+      clientId: process.env.NEXT_PUBLIC_WIX_CLIENT_ID!,//client id is created by going settings->headless settings->createAuth->genreating name and token
+      tokens: {
+        //refresh token is created whenever user visits our website,so that he can add items to cart without login and on refresh of page items in cart becomes unchanged,if user never vists page then cookie for refresh token will never be generated
+        //accessToken is useful for authentication
+      refreshToken,accessToken:{value:"",expiresAt:0}
+      }
+    })
+  })
+//to make our context avaiable throught application follow below steps
+export  type WixClientType=typeof wixClient//making type
+
+export const wixClientContext=createContext<WixClientType>(wixClient) //creating context
+
+export const wixClientContextProvider=({children}:{children:ReactNode})=>{
+  return (<wixClientContext.Provider value={wixClient}>
+    {children}
+  </wixClientContext.Provider>)
+}
+
+//next wrap this wixClientContextProvider over our application using layout.tsx of root file
+//use this to retrieve data
+const wixClient=useContext(wixClientContext)
+useEffect(()=>{
+  console.log("entering useEffect")
+  const getProducts=async()=>{
+    const { items } = await wixClient.products.queryProducts().find();
+    console.log("products",items)
+  }
+  getProducts()
+},[wixClient])
+
+CREATING HOOK FOR WIX CLIENT IN src/hooks/useWixClient.tsx
+inside which
+import { wixClientContext } from "@/context/wixContext";
+import { useContext } from "react";
+
+const useWixClient = ()=>{
+    return useContext(wixClientContext)
+}
+export default useWixClient
+
+MAKING ANOTHER WIX CLIENT FOR FETCHING DATA FROM BACKEND FOR FETCHING DATA,MAKING SERVER COMPONENTS FOR FETCHING FOR BETTER SEO RANKINGS
+
+import { createClient, OAuthStrategy } from "@wix/sdk";
+import { collections, products } from "@wix/stores";
+import { cookies } from "next/headers";//to get cookies from next server components
+const wixClientServer = async ()=>{
+
+    let refreshToken;
+    try {
+        let cookieStore=cookies()//cookies() returns collection of all cookies
+        refreshToken=JSON.parse(cookieStore.get('refreshToken')?.value || "{}")//accessing required cookie using .get
+    } catch (error) {
+        console.log(error)
+    }
+    const wixClient = createClient({
+        modules: {
+            products,
+            collections
+        },
+        auth: OAuthStrategy({
+            clientId: process.env.NEXT_PUBLIC_WIX_CLIENT_ID!,
+            tokens: {
+                refreshToken,accessToken:{value:"",expiresAt:0}
+            }
+        })
+    })
+    return wixClient
+}
+export default wixClientServer
+
+and to acess it in page.tsx
+const wixClient=await wixClientServer()
+const data=await wixClient.products.queryProducts().find()
+console.log(data.items)
