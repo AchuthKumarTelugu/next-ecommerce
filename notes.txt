@@ -124,3 +124,11 @@ and to acess it in page.tsx
 const wixClient=await wixClientServer()
 const data=await wixClient.products.queryProducts().find()
 console.log(data.items)
+
+in productList getting data from wix server and populating them and collectionsIds in wix api refers to its category and to get image:product.media?.mainMedia?.image?.url
+category refers to collections in wix,to get collections go stores=>collections=>queryCollections()
+watch it in page.tsx,categoryList.tsx
+
+to get search params include them in function arguments like const List = async({searchParams}:{searchParams:{
+  by clicking category card we redirect to list page where it contains slug,using that slug in url in list page we extract its data from api from category method
+  list/page.tsx

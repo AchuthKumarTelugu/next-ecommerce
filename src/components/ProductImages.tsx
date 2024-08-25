@@ -2,7 +2,8 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 
-const ProductImages = () => {
+const ProductImages = ({images}:any) => {
+  console.log(images)
 type imagelistModal={
   id:number,url:string
 }
