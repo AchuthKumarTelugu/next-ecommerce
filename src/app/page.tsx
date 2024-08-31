@@ -8,18 +8,15 @@ import wixClientServer from "@/lib/wixClientServer"
 import { Suspense, useContext, useEffect } from "react"
 
 const HomePage = async() => {
-// const wixClient=useWixClient()
-// useEffect(()=>{
-//   console.log("entering useEffect")
-//   const getProducts=async()=>{
-//     const { items } = await wixClient.products.queryProducts().find();
-//     console.log("products",items)
-//   }
-//   getProducts()
-// },[wixClient])
-// const wixClient=await wixClientServer()
-// const data=await wixClient.products.queryProducts().find()
+//   // test case
+// const wixClient=useContext(wixClientContext)
+//   const { items } = await wixClient.products.queryProducts().find();
+//   console.log("products",items)
+
+// const wixClient2=await wixClientServer()
+// const data=await wixClient2.products.queryProducts().find()
 // console.log(data.items)
+// // test case
   return (
     <div className=''>
       <Slider />

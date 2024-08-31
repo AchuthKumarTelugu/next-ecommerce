@@ -32,7 +32,7 @@ const List = async ({ searchParams }: {
       {/* product list */}
       <h1 className='mt-12 text-xl font-semibold mb-12 uppercase'>PRODUCTS FOR YOU!</h1>
       <Suspense fallback={<div>...loading</div>}>
-        <ProductList categoryId={data?._id || process.env.NEXT_PUBLIC_ACESSORIES_ID!} limit={5} searchParams={searchParams}/>
+        <ProductList categoryId={data?._id || process.env.NEXT_PUBLIC_ACESSORIES_ID!} limit={20} searchParams={searchParams}/>
       </Suspense>
     </div>
   )
